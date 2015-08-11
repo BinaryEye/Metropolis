@@ -23,7 +23,7 @@ public class SellFragment extends Fragment {
 
         for (int i = 0; i < 5; i++) {
             ItemView item = new ItemView(getActivity());
-			item.setData("Awesome Armour", "Armor=100 \n Health=300", "Buy Item");
+			item.setData("Awesome Armour", "Armor=100 \n Health=300", "Sell Item");
 			layout.addView(item);
         }
 
