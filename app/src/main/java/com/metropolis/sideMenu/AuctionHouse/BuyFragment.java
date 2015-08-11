@@ -37,51 +37,15 @@ public class BuyFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				search(arg0);
-
+				layout.removeAllViewsInLayout();
+				String itemName = searchBox.getText().toString();
+				for(int i = 0;i<5;i++) {
+					ItemView item = new ItemView(getActivity());
+					item.setData(itemName, "Armor:100%, Health:100%", "Buy Item");
+					layout.addView(item);
+				}
 			}
 		});
 		return rootView;
 	}
-
-	public void search(View v) {
-		layout.removeAllViewsInLayout();
-		String itemName = searchBox.getText().toString();
-		String[] nameParts = itemName.split(" ");
-		itemName = "";
-		for (int i = 0; i < nameParts.length; i++) {
-			itemName += nameParts[i].toLowerCase();
-		}
-		getDataFromServer(itemName);
-	}
-
-	public void getDataFromServer(String itemName) {
-		GetRequest postDataRequest = new GetRequest(config.LOCAL_HOST_URL
-				+ "/api/items/show?name=" + itemName) {
-			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200) {
-					setData(response);
-				} else {
-					Toast.makeText(getActivity(), "Check Your Connection",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		};
-		postDataRequest.execute();
-	}
-
-	public void setData(String reponse) {
-		JSONArray json;
-		try {
-			json = new JSONObject(reponse).getJSONArray("items");
-			JSONObject jsonObject = json.getJSONObject(0);
-			String stats = jsonObject.getString("stats");
-			ItemView item = new ItemView(getActivity());
-			item.setData(jsonObject.getString("name"), stats, "Buy Item");
-			layout.addView(item);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
 }
