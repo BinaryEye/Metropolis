@@ -18,16 +18,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return new BuyFragment();
 		case 1:
 			return new SellFragment();
-		case 2:
-			return new BidFragment();
-		case 3:
-			return new AuctionsFragment();
 		}
 		return null;
 	}
 
 	@Override
 	public int getCount() {
-		return 4;
+		return 2;
 	}
 }

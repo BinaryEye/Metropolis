@@ -20,7 +20,7 @@ public class AuctionHouseFragment extends Fragment implements
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
-	private String[] tabs = { "Buy", "Sell", "Bids", "Auctions" };
+	private String[] tabs = { "Buy", "Sell"};
 
 	public AuctionHouseFragment() {
 	}

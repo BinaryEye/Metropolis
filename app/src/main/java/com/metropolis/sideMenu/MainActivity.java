@@ -67,9 +67,6 @@ public class MainActivity extends FragmentActivity {
 		// Home
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons
 				.getResourceId(0, -1)));
-		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons
-				.getResourceId(1, -1)));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -216,10 +213,6 @@ public class MainActivity extends FragmentActivity {
 		case 0:
 			fragment = new AuctionHouseFragment();
 			tag = "auctionhouse";
-			break;
-		case 1:
-			fragment = new ProfileFragment();
-			tag = "profile";
 			break;
 
 		default:
