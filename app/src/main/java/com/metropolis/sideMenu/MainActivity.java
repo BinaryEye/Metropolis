@@ -3,15 +3,11 @@ package com.metropolis.sideMenu;
 import com.metropolis.AuthActivity;
 import com.metropolis.CommentsActivity;
 import com.metropolis.R;
-import com.metropolis.config.config;
-import com.metropolis.requestClasses.PostRequest;
 import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -21,16 +17,13 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 	private SharedPreferences data;
@@ -77,9 +70,6 @@ public class MainActivity extends FragmentActivity {
 		// Find People
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons
 				.getResourceId(1, -1)));
-		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons
-				.getResourceId(2, -1)));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -120,17 +110,6 @@ public class MainActivity extends FragmentActivity {
 			// on first time display view for first nav item
 			displayView(0);
 		}
-		// try {
-		// ViewConfiguration config = ViewConfiguration.get(this);
-		// Field menuKeyField = ViewConfiguration.class
-		// .getDeclaredField("sHasPermanentMenuKey");
-		// if (menuKeyField != null) {
-		// menuKeyField.setAccessible(true);
-		// menuKeyField.setBoolean(config, false);
-		// }
-		// } catch (Exception ex) {
-		// // Ignore
-		// }
 		data = getPreferences(MODE_PRIVATE);
 		if (getIntent().getStringExtra("response") != null)
 			createUser(getIntent().getStringExtra("response"));
@@ -216,165 +195,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void create() {
-		if (getSupportFragmentManager().findFragmentByTag("feed") != null) {
-			final FeedFragment fragment = (FeedFragment) getSupportFragmentManager()
-					.findFragmentByTag("feed");
-			if (fragment.getPosition() == 0) {
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						this);
-				final EditText post = new EditText(this);
-				post.setHint("Your Post Here");
-				// set title
-				alertDialogBuilder.setTitle("New Post");
-
-				// set dialog message
-				alertDialogBuilder
-						.setView(post)
-						.setCancelable(false)
-						.setPositiveButton("Create",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										PostRequest newPostRequest = new PostRequest(
-												config.LOCAL_HOST_URL
-														+ "/api/user_posts/create") {
-											@Override
-											protected void onPostExecute(
-													String result) {
-												if (getStatusCode() == 201)
-													Toast.makeText(
-															getBaseContext(),
-															"Created",
-															Toast.LENGTH_SHORT)
-															.show();
-												else
-													Toast.makeText(
-															getBaseContext(),
-															"Failed",
-															Toast.LENGTH_SHORT)
-															.show();
-
-											}
-										};
-										JSONObject json = new JSONObject();
-										try {
-											json.put("text", post.getText()
-													.toString());
-											json.put(
-													"user_id",
-													getPreferences(MODE_PRIVATE)
-															.getInt("userId", 0));
-										} catch (JSONException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-										newPostRequest.setBody(json);
-										newPostRequest.execute();
-										FragmentTransaction ft = getSupportFragmentManager()
-												.beginTransaction();
-										ft.detach(fragment);
-										ft.attach(fragment);
-										ft.commit();
-									}
-								})
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										// if this button is clicked, just close
-										// the dialog box and do nothing
-										dialog.cancel();
-										FragmentTransaction ft = getSupportFragmentManager()
-												.beginTransaction();
-										ft.detach(fragment);
-										ft.attach(fragment);
-										ft.commit();
-									}
-								});
-
-				// create alert dialog
-				AlertDialog alertDialog = alertDialogBuilder.create();
-
-				// show it
-				alertDialog.show();
-			}
-
-			if (fragment.getPosition() == 1) {
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						this);
-				final EditText post = new EditText(this);
-				post.setHint("Your Post Here");
-				// set title
-				alertDialogBuilder.setTitle("New Post");
-
-				// set dialog message
-				alertDialogBuilder
-						.setView(post)
-						.setCancelable(false)
-						.setPositiveButton("Create",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										PostRequest newPostRequest = new PostRequest(
-												config.LOCAL_HOST_URL
-														+ "/api/user_posts/create") {
-											@Override
-											protected void onPostExecute(
-													String result) {
-												if (getStatusCode() == 201)
-													Toast.makeText(
-															getBaseContext(),
-															"Created",
-															Toast.LENGTH_SHORT)
-															.show();
-												else
-													Toast.makeText(
-															getBaseContext(),
-															"Failed",
-															Toast.LENGTH_SHORT)
-															.show();
-
-											}
-										};
-										JSONObject json = new JSONObject();
-										try {
-											json.put("text", post.getText()
-													.toString());
-											json.put(
-													"user_id",
-													getPreferences(MODE_PRIVATE)
-															.getInt("userId", 0));
-										} catch (JSONException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-										newPostRequest.setBody(json);
-										newPostRequest.execute();
-										FragmentTransaction ft = getSupportFragmentManager()
-												.beginTransaction();
-										ft.detach(fragment);
-										ft.attach(fragment);
-										ft.commit();
-									}
-								})
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										// if this button is clicked, just close
-										// the dialog box and do nothing
-										dialog.cancel();
-									}
-								});
-
-				// create alert dialog
-				AlertDialog alertDialog = alertDialogBuilder.create();
-
-				// show it
-				alertDialog.show();
-
-			}
-		}
 
 	}
 
@@ -394,14 +214,10 @@ public class MainActivity extends FragmentActivity {
 		String tag = "";
 		switch (position) {
 		case 0:
-			fragment = new FeedFragment();
-			tag = "feed";
-			break;
-		case 1:
 			fragment = new AuctionHouseFragment();
 			tag = "auctionhouse";
 			break;
-		case 2:
+		case 1:
 			fragment = new ProfileFragment();
 			tag = "profile";
 			break;
