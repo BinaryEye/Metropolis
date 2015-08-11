@@ -56,37 +56,12 @@ public class AuthActivity extends FragmentActivity {
 		EditText pass = (EditText) findViewById(R.id.loginPassword);
 		String username = uname.getText().toString();
 		String password = pass.getText().toString();
-		PostRequest loginRequest = new PostRequest(config.LOCAL_HOST_URL
-				+ "/api/user/login") {
-			protected void onPostExecute(String response) {
-				if (this.getStatusCode() == 200) {
-					Toast.makeText(getBaseContext(), "Login Successful",
-							Toast.LENGTH_LONG).show();
-					Intent intent = new Intent(getBaseContext(),MainActivity.class);
-					intent.putExtra("response", response);
-					intent.putExtra("type",1);
-					startActivity(intent);
-				} else {
-					if (this.getStatusCode() == 404) {
-						Toast.makeText(getBaseContext(), "Wrong Credentials",
-								Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(getBaseContext(), "Connection Error",
-								Toast.LENGTH_LONG).show();
-					}
-				}
-			}
-		};
-		JSONObject json = new JSONObject();
-		try {
-			json.put("username", username);
-			json.put("password", password);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(username.equals("user") && password.equals("pass")){
+			Toast.makeText(getBaseContext(), "Login Successful",
+					Toast.LENGTH_LONG).show();
+			Intent intent = new Intent(getBaseContext(),MainActivity.class);
+			startActivity(intent);
 		}
-		loginRequest.setBody(json);
-		loginRequest.execute();
 	}
 
 	public void register(View v) {
@@ -96,34 +71,8 @@ public class AuthActivity extends FragmentActivity {
 				.getText().toString();
 		String email = ((EditText) findViewById(R.id.registerEmail)).getText()
 				.toString();
-		PostRequest registerRequest = new PostRequest(config.LOCAL_HOST_URL
-				+ "/api/user/create") {
-			@Override
-			protected void onPostExecute(String response) {
-				if (getStatusCode() == 200)
-					Toast.makeText(getBaseContext(),
-							"Registered, Please Login !", Toast.LENGTH_LONG)
-							.show();
-				else
-					Toast.makeText(getBaseContext(), "Error, Try Again Later",
-							Toast.LENGTH_LONG).show();
-			}
-		};
-		JSONObject json = new JSONObject();
-		try {
-			json.put("username", username);
-			json.put("password", password);
-			json.put("email", email);
-			json.put("avatar", "N/A");
-			json.put("date_of_birth", "1/1/2001");
-			json.put("location", "N/A");
-			json.put("gender", "N/A");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		registerRequest.setBody(json);
-		registerRequest.execute();
+		Toast.makeText(getBaseContext(), "Registration Successful",
+				Toast.LENGTH_LONG).show();
 	}
 
 }
